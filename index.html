@@ -21,13 +21,13 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="css/portfolioAssistant.css">
 </head>
 
 <body>
     <header class="site-header">
-        <a class="brand" href="#inicio" aria-label="Ir al inicio">Jonh Sebastian Andrade</a>
+        <a class="brand" href="#sobremi" aria-label="Ir al inicio">Jonh Sebastian Andrade</a>
         <nav id="nav" class="site-nav" aria-label="Navegación principal">
-            <a href="#inicio">Inicio</a>
             <a href="#sobremi">Sobre mí</a>
             <a href="#experiencia">Experiencia</a>
             <a href="#skills">Skills</a>
@@ -41,29 +41,40 @@
     </header>
 
     <main>
-        <section id="inicio" class="hero section">
+        <section id="sobremi" class="hero section">
             <div class="hero-content reveal">
-                <p class="eyebrow">Abierto a oportunidades como desarrollador web junior.</p>
                 <h1>Jonh Sebastian Andrade</h1>
+
                 <h2>Desarrollador Web Junior / Full Stack Junior</h2>
+
                 <p class="hero-text">
                     Desarrollador web junior formado en Desarrollo de Aplicaciones Web, con experiencia práctica en
                     proyectos full stack, backoffice administrativo, APIs REST y bases de datos relacionales.
                 </p>
+
+                <p class="hero-text">
+                    He trabajado con React, Node.js, Express, PostgreSQL, CRUDs, roles, validaciones, gestión de datos y
+                    pruebas con Postman. Busco incorporarme a un equipo técnico donde aportar en frontend y backend, seguir
+                    creciendo y trabajar con código mantenible y buenas prácticas.
+                </p>
+
                 <div class="hero-actions" aria-label="Acciones principales">
                     <a class="btn btn-primary" href="#proyectos">
                         <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
                         Ver proyectos
                     </a>
+
                     <a class="btn btn-secondary" download href="CV/CV - John Sebastian Andrade Zapata.pdf">
                         <i class="fa-solid fa-download" aria-hidden="true"></i>
                         Descargar CV
                     </a>
+
                     <a class="btn btn-ghost" href="https://www.linkedin.com/in/john-sebastian-andrade-zapata"
                         target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
                         LinkedIn
                     </a>
+
                     <a class="btn btn-ghost" href="https://github.com/AZJohns" target="_blank"
                         rel="noopener noreferrer">
                         <i class="fa-brands fa-github" aria-hidden="true"></i>
@@ -71,50 +82,21 @@
                     </a>
                 </div>
             </div>
+
             <aside class="hero-card reveal" aria-label="Resumen profesional">
                 <span class="status-dot"></span>
-                <p>Stack principal</p>
+
+                <p>Sobre Mí</p>
+
                 <ul>
-                    <li>React, JavaScript, HTML5, CSS3, Tailwind CSS</li>
-                    <li>Node.js, Express, PHP, Java</li>
-                    <li>PostgreSQL, MySQL, APIs REST</li>
+                    <li><strong>Ubicación:</strong> Madrid, España</li>
+                    <li><strong>Email:</strong> <a
+                            href="mailto:andradezapatajohn@gmail.com">andradezapatajohn@gmail.com</a></li>
+                    <li><strong>Stack:</strong> React, JavaScript, Java, Node.js, Express, PostgreSQL, MySQL, PostgreSQL, PHP, Git y
+                        Postman</li>
+                    <li><strong>Intereses:</strong> Full stack, frontend, backend, APIs REST, SQL y Ciberseguridad</li>
                 </ul>
             </aside>
-        </section>
-
-        <section id="sobremi" class="section about">
-            <div class="section-heading reveal">
-                <p class="eyebrow">Sobre mí</p>
-                <h2>Perfil orientado a producto, código mantenible y aprendizaje real.</h2>
-            </div>
-            <div class="about-grid reveal">
-                <div class="about-copy">
-                    <p>
-                        Soy Jonh Andrade, desarrollador web junior formado en Desarrollo de Aplicaciones Web. Me
-                        interesa crear aplicaciones web funcionales, seguras y mantenibles, combinando frontend,
-                        backend y bases de datos.
-                    </p>
-                    <p>
-                        He trabajado en funcionalidades reales como CRUDs, autenticación, validaciones, APIs REST,
-                        paneles administrativos y gestión de datos. Actualmente busco una oportunidad profesional como
-                        desarrollador web junior o full stack junior donde seguir creciendo en un equipo técnico.
-                    </p>
-                </div>
-                <div class="info-panel" aria-label="Datos profesionales">
-                    <div>
-                        <span>Ubicación</span>
-                        <strong>Madrid, España</strong>
-                    </div>
-                    <div>
-                        <span>Email</span>
-                        <a href="mailto:andradezapatajohn@gmail.com">andradezapatajohn@gmail.com</a>
-                    </div>
-                    <div>
-                        <span>Intereses</span>
-                        <strong>Full stack, backend, frontend, seguridad web y buenas prácticas.</strong>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section id="experiencia" class="section experience">
@@ -423,13 +405,16 @@
     </main>
 
     <footer class="site-footer">
-        <a href="#inicio" class="back-to-top" aria-label="Volver al inicio">
+        <a href="#sobremi" class="back-to-top" aria-label="Volver al inicio">
             <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
         </a>
         <p>John Sebastian Andrade · Desarrollador Web Junior / Full Stack Junior</p>
     </footer>
 
     <script src="script.js"></script>
+    <script src="js/portfolioAssistantData.js"></script>
+    <script src="js/portfolioAssistant.js"></script>
 </body>
+
 
 </html>
