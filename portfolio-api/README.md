@@ -37,11 +37,14 @@ Endpoint para enviar una pregunta al asistente del portfolio.
 Ejemplo de request:
 
 ```bash
+curl -X POST https://portfolio-v2-ne7x.onrender.com \
+  -H "Content-Type: application/json" \
+  -d "{\"message\":\"Que tecnologias maneja John?\",\"visitorId\":\"demo-visitor\"}"
+___________________
 curl -X POST http://localhost:3000/api/chat \
   -H "Content-Type: application/json" \
   -d "{\"message\":\"Que tecnologias maneja John?\",\"visitorId\":\"demo-visitor\"}"
 ```
-
 Body esperado:
 
 ```json
