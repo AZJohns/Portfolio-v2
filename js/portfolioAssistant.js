@@ -1,5 +1,5 @@
 (function () {
-    const ASSISTANT_API_URL = "https://portfolio-v2-ne7x.onrender.com"; // Cambiar por la URL de producción del backend.
+    const ASSISTANT_API_URL = "https://portfolio-v2-ne7x.onrender.com/api/chat"; 
     const VISITOR_ID_STORAGE_KEY = "portfolioVisitorId";
     const CONNECTION_ERROR_MESSAGE =
         "No se pudo conectar con el asistente en este momento. Puedes contactar con John directamente por LinkedIn o email.";
