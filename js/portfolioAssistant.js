@@ -7,7 +7,7 @@
 
     const suggestedQuestions = [
         "¿Qué experiencia tiene John?",
-        "¿Qué hizo en sus prácticas?",
+        "¿Qué hizo John en sus prácticas?",
         "¿Qué tecnologías utiliza?",
         "¿Tiene experiencia con React y Node.js?",
         "¿Qué proyectos tiene?",
