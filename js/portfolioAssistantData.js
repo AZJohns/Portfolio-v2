@@ -2,7 +2,7 @@ window.portfolioAssistantData = {
     profile: {
         name: "John Sebastian Andrade",
         shortName: "John Andrade",
-        role: "Desarrollador Web Junior / Full Stack Junior",
+        role: "Desarrollador Web Junior / Full Stack Junior / Student Cibersecurity",
         location: "Madrid, España",
         availability: "Abierto a oportunidades como desarrollador web junior o full stack junior.",
         education: "Técnico Superior en Desarrollo de Aplicaciones Web",
