@@ -5,14 +5,46 @@ import { getPortfolioContext } from './portfolio-context.service.js';
 const OUT_OF_SCOPE_RESPONSE =
   'Solo puedo responder preguntas sobre el portfolio, CV, experiencia, proyectos y tecnologías de John. Para otra información, puedes contactarlo directamente por LinkedIn o email.';
 
+const normalizeText = (text) =>
+  text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[¿?¡!.,;:()"]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
 const SYSTEM_PROMPT = `
 Eres el asistente del portfolio de John Andrade.
-Responde únicamente sobre su portfolio, CV, experiencia, proyectos, tecnologías, formación, disponibilidad laboral y contacto.
+
+Responde únicamente sobre:
+- su portfolio;
+- CV;
+- experiencia;
+- prácticas profesionales;
+- funciones realizadas;
+- proyectos;
+- tecnologías;
+- formación;
+- disponibilidad laboral;
+- GitHub;
+- LinkedIn;
+- contacto.
+
+Considera dentro del alcance preguntas escritas con tildes, sin tildes, mayúsculas, minúsculas o signos de interrogación.
+Por ejemplo, estas preguntas son equivalentes y están dentro del alcance:
+- "¿Qué hizo John en sus prácticas?"
+- "que hizo john en sus practicas"
+- "qué funciones hizo en SAAMI"
+- "cuáles fueron sus responsabilidades en las prácticas"
+
 No inventes experiencia, empresas, años de experiencia, certificaciones ni tecnologías.
 No respondas preguntas generales de programación.
-Si la pregunta está fuera de alcance, responde exactamente:
+
+Si la pregunta está claramente fuera de alcance, responde exactamente:
 '${OUT_OF_SCOPE_RESPONSE}'
-Responde en español, de forma breve, profesional y clara.
+
+Responde en el idioma que te pida el usuario, de forma breve, profesional y clara.
 Máximo 900 caracteres.
 `.trim();
 
@@ -37,6 +69,7 @@ const getOpenAIClient = () => {
 export const generatePortfolioAnswer = async (userMessage) => {
   const client = getOpenAIClient();
   const portfolioContext = getPortfolioContext();
+  const normalizedUserMessage = normalizeText(userMessage);
 
   const completion = await client.chat.completions.create({
     model: env.openaiModel,
@@ -45,11 +78,22 @@ export const generatePortfolioAnswer = async (userMessage) => {
     messages: [
       {
         role: 'system',
-        content: `${SYSTEM_PROMPT}\n\nContexto cerrado del portfolio:\n${portfolioContext}`,
+        content: `${SYSTEM_PROMPT}
+
+Contexto cerrado del portfolio:
+${portfolioContext}`,
       },
       {
         role: 'user',
-        content: userMessage,
+        content: `
+Pregunta original del usuario:
+${userMessage}
+
+Pregunta normalizada para interpretar intención:
+${normalizedUserMessage}
+
+Responde usando únicamente el contexto cerrado del portfolio.
+`.trim(),
       },
     ],
   });
