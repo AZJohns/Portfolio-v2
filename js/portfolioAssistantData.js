@@ -214,7 +214,7 @@ window.portfolioAssistantData = {
         portfolio: "https://azjohns.github.io/Portfolio-v2/",
         github: "https://github.com/AZJohns",
         linkedin: "https://www.linkedin.com/in/john-sebastian-andrade-zapata",
-        cv: "CV/CV - John Sebastian Andrade Zapata.pdf",
+        cv: "CV/CV - John Sebastian Andrade Zapata - Profesional ATS.pdf",
         email: "andradezapatajohn@gmail.com",
         professionalProject: "https://kaprichosrd.com/"
     }
