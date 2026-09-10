@@ -127,6 +127,8 @@
         let isWaitingForResponse = false;
         let hasReachedLimit = false;
 
+        let isFirstRequest = true;
+
         function setPanelState(isOpen) {
             panel.toggleAttribute("hidden", !isOpen);
             toggle.setAttribute("aria-expanded", String(isOpen));
@@ -169,7 +171,6 @@
             input.value = "";
 /*
             // metodo 1
-            const isFirstInteraction = messages.length <= 1;
 
             const loadingText = isFirstInteraction
                 ? "Activando servidor, puede tardar un minuto..."
@@ -180,10 +181,7 @@
             setLoadingState(true);
 */
             // metodo 2
-            // 1. Declaras el estado en tu componente
-            const [isFirstRequest, setIsFirstRequest] = useState(true);
 
-            // 2. En tu función de envío:
             const loadingText = isFirstRequest
                 ? "Activando servidor, puede tardar un minuto..."
                 : "Pensando...";
@@ -191,11 +189,11 @@
             const loadingMessage = addMessage(messages, loadingText, "bot");
             setLoadingState(true);
 
-            // 3. Justo después de recibir la primera respuesta exitosa, cambias el estado:
-            setIsFirstRequest(false)
-
             try {
                 const data = await askPortfolioAssistant(cleanQuestion);
+
+                isFirstRequest = false;
+
                 loadingMessage.textContent = data.answer || CONNECTION_ERROR_MESSAGE;
                 updateUsageStatus(data.remaining, data.limit);
 
