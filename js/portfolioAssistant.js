@@ -1,5 +1,5 @@
 (function () {
-    const ASSISTANT_API_URL = "https://portfolio-v2-ne7x.onrender.com/api/chat"; 
+    const ASSISTANT_API_URL = "https://portfolio-v2-ne7x.onrender.com/api/chat";
     const VISITOR_ID_STORAGE_KEY = "portfolioVisitorId";
     const CONNECTION_ERROR_MESSAGE =
         "No se pudo conectar con el asistente en este momento. Puedes contactar con John directamente por LinkedIn o email.";
@@ -167,9 +167,32 @@
 
             addMessage(messages, cleanQuestion, "user");
             input.value = "";
+/*
+            // metodo 1
+            const isFirstInteraction = messages.length <= 1;
 
-            const loadingMessage = addMessage(messages, "Pensando...", "bot");
+            const loadingText = isFirstInteraction
+                ? "Activando servidor, puede tardar un minuto..."
+                : "Pensando...";
+
+            const loadingMessage = addMessage(messages, loadingText, "bot");
+
             setLoadingState(true);
+*/
+            // metodo 2
+            // 1. Declaras el estado en tu componente
+            const [isFirstRequest, setIsFirstRequest] = useState(true);
+
+            // 2. En tu función de envío:
+            const loadingText = isFirstRequest
+                ? "Activando servidor, puede tardar un minuto..."
+                : "Pensando...";
+
+            const loadingMessage = addMessage(messages, loadingText, "bot");
+            setLoadingState(true);
+
+            // 3. Justo después de recibir la primera respuesta exitosa, cambias el estado:
+            setIsFirstRequest(false)
 
             try {
                 const data = await askPortfolioAssistant(cleanQuestion);
