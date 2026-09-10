@@ -1,6 +1,6 @@
 const portfolioContext = `
 John Sebastian Andrade es Desarrollador Web Junior / Full Stack Junior ubicado en Madrid, España.
-Está formado como Técnico Superior en Desarrollo de Aplicaciones Web en DAVANTE MEDAC y cursa formación en ciberseguridad.
+Está formado como Técnico Superior en Desarrollo de Aplicaciones Web en DAVANTE MEDAC y cuenta con un Máster Profesional en ciberseguridad.
 
 Está abierto a oportunidades como Desarrollador Web Junior, Frontend Junior, Backend Junior o Full Stack Junior, especialmente en posiciones relacionadas con React, Node.js, Express, SQL, APIs REST, CRUDs, validaciones, roles y backoffice administrativo.
 

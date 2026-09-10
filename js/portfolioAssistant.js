@@ -169,18 +169,6 @@
 
             addMessage(messages, cleanQuestion, "user");
             input.value = "";
-/*
-            // metodo 1
-
-            const loadingText = isFirstInteraction
-                ? "Activando servidor, puede tardar un minuto..."
-                : "Pensando...";
-
-            const loadingMessage = addMessage(messages, loadingText, "bot");
-
-            setLoadingState(true);
-*/
-            // metodo 2
 
             const loadingText = isFirstRequest
                 ? "Activando servidor, puede tardar un minuto..."
