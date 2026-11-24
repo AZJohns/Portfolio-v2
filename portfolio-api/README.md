@@ -149,21 +149,35 @@ Este limite se reinicia cuando se reinicia el servidor. Todavia no usa Redis ni 
 
 El chat de reservas usa el mismo mecanismo (`createRateLimitMiddleware` en `src/middlewares/rate-limit.middleware.js`) pero con su propio contador y su propio limite (`MAX_RESERVAS_MESSAGES_PER_VISITOR`), asi que gastar mensajes en un chat no afecta al otro.
 
-Respuesta cuando se supera el limite:
+Respuesta cuando se supera el limite (HTTP 429). El frontend se fija en el status y en `code`, no en el texto del mensaje:
 
 ```json
 {
-  "error": "Has alcanzado el límite de 10 preguntas para este asistente."
+  "error": "Has alcanzado el límite de 10 preguntas para este asistente.",
+  "code": "LIMIT_REACHED",
+  "remaining": 0,
+  "limit": 10
 }
 ```
 
+## Limitaciones conocidas
+
+- **El contador esta en memoria.** Se pierde cuando Render reinicia o duerme el servidor, asi que el limite se reinicia con frecuencia.
+- **Borrar `localStorage` reinicia el `visitorId`.** La clave del limite es un hash de `visitorId` + IP + user-agent; con otro `visitorId` la clave es distinta y el contador empieza de cero.
+- **`X-Forwarded-For` se toma sin `trust proxy`.** `getVisitorKey` usa el primer valor de esa cabecera, que un cliente puede enviar el mismo, asi que la IP del hash se puede falsificar.
+- **Un solo origen CORS** (`FRONTEND_ORIGIN`). Para probar en local hay que arrancar el servidor con esa variable apuntando al servidor local.
+
+Por todo esto el limite sirve para frenar el uso casual, no como proteccion frente a abuso. La proteccion real contra el coste es el limite de gasto mensual de la cuenta de OpenAI.
+
+Mejora futura: un segundo contador solo por IP, con un tope mas alto que el de visitante (para no bloquear redes compartidas), usando `app.set('trust proxy', 1)` y `req.ip` en lugar de leer `X-Forwarded-For` a mano. Esto tambien afecta al chat de reservas porque comparte `getVisitorKey`. Para que el contador sobreviva a los reinicios habria que guardarlo fuera del proceso (Redis o base de datos).
+
 ## Errores controlados
 
-Si falta `OPENAI_API_KEY`, el backend devuelve un error controlado y no intenta llamar a OpenAI:
+Si falta `OPENAI_API_KEY`, el backend responde 503 con un mensaje generico y no intenta llamar a OpenAI. El detalle (`OPENAI_API_KEY no está configurada en el servidor.`) solo va al log del servidor:
 
 ```json
 {
-  "error": "OPENAI_API_KEY no está configurada en el servidor."
+  "error": "El asistente no está configurado temporalmente."
 }
 ```
 

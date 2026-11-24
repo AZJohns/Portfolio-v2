@@ -31,6 +31,8 @@ export const createRateLimitMiddleware = ({ limit, limitMessage }) => {
     if (currentCount >= limit) {
       return res.status(429).json({
         error: limitMessage,
+        // Código estable: el frontend lo usa en lugar de comparar el texto del mensaje.
+        code: 'LIMIT_REACHED',
         remaining: 0,
         limit,
       });

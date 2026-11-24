@@ -682,3 +682,14 @@ dd {
         height: 220px;
     }
 }
+
+.education-details {
+    margin: 0.75rem 0 0;
+    padding-left: 1.1rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+.education-details li + li { margin-top: 0.35rem; }
+.project-card--reservas img {
+    object-fit: contain;
+}
