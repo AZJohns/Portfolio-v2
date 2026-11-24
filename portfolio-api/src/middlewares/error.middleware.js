@@ -1,10 +1,15 @@
+import { sanitizeLogValue } from '../utils/log-sanitizer.util.js';
+
 const publicErrorMessages = {
   400: 'Solicitud no válida.',
   429: 'Has alcanzado el límite de 10 preguntas para este asistente.',
+  // 502 = «Bad Gateway»: nuestro servidor funciona, pero el servicio de detrás (OpenAI o Dialogflow CX) falló.
+  // Mensaje genérico porque lo lanzan los dos asistentes; el de reservas lo personaliza con err.publicMessage.
+  502: 'El asistente no responde ahora mismo.',
   503: 'El asistente no está configurado temporalmente.',
 };
 
-const controlledStatusCodes = new Set([400, 429, 503]);
+const controlledStatusCodes = new Set([400, 429, 502, 503]);
 
 const getStatusCode = (err) => {
   const statusCode = Number(err.statusCode || err.status);
@@ -19,12 +24,6 @@ const getPublicMessage = (err, statusCode) => {
 
   return publicErrorMessages[statusCode] || 'Error interno del servidor.';
 };
-
-const sanitizeLogValue = (value) =>
-  String(value)
-    .replace(/sk-[A-Za-z0-9_-]+/g, '[redacted]')
-    .replace(/(OPENAI_API_KEY\s*[=:]\s*)\S+/gi, '$1[redacted]')
-    .replace(/(api[_-]?key\s*[=:]\s*)\S+/gi, '$1[redacted]');
 
 const logError = (err, statusCode) => {
   const logPayload = {

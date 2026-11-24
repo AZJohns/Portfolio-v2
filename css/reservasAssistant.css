@@ -1,0 +1,414 @@
+/*
+ * Estilos del widget «Casa John · Reservas».
+ *
+ * Reutiliza (sin modificarlas) las clases internas del chat del CV definidas en
+ * css/portfolioAssistant.css: portfolio-assistant-header / -title / -close / -messages /
+ * -message(--bot|--user) / -usage / -suggestion / -form / -input / -submit.
+ * Así los dos chats se ven igual. Por eso portfolioAssistant.css debe cargarse ANTES que este archivo.
+ *
+ * Lo propio de este widget lleva el prefijo reservas-assistant-* y no afecta al chat del CV.
+ * Los colores y el radio vienen de las variables de estilos.css (--text, --line, --muted, --primary, --radius...).
+ */
+
+/* Capa modal: fondo oscuro que cubre la pantalla, con el panel centrado.
+   z-index 90 > 80 del botón flotante del CV, para quedar por encima. */
+.reservas-assistant {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(3, 8, 16, 0.72);
+    color: var(--text);
+    font-family: inherit;
+}
+
+/* display:grid de arriba anularía el atributo hidden, así que se fuerza aquí. */
+.reservas-assistant[hidden] {
+    display: none;
+}
+
+/* Mientras el diálogo está abierto, la página de detrás no se desplaza. */
+body.reservas-assistant-open {
+    overflow: hidden;
+}
+
+/* flex en columna (y no grid con filas fijas): si el contador o las sugerencias
+   se ocultan, el chat sigue ocupando todo el alto sin descolocarse. */
+.reservas-assistant-panel {
+    width: min(440px, 100%);
+    height: min(680px, calc(100vh - 2rem));
+    height: min(680px, calc(100dvh - 2rem));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(17, 31, 51, 0.98), rgba(13, 27, 46, 0.98));
+    box-shadow: var(--shadow);
+}
+
+.reservas-assistant-panel > .portfolio-assistant-header {
+    flex: 0 0 auto;
+}
+
+/* Cuerpo = diagrama + columna del chat.
+   Pantallas estrechas: una columna (diagrama plegable arriba, chat debajo).
+   Escritorio (más abajo): dos columnas, chat a la izquierda y diagrama a la derecha. */
+.reservas-assistant-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservas-assistant-chat {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservas-assistant-chat > * {
+    flex: 0 0 auto;
+}
+
+/* La zona de mensajes se estira y es la única que hace scroll. */
+.reservas-assistant-chat > .portfolio-assistant-messages {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* ---------- Diagrama del flujo (js/reservasFlowDiagram.js) ---------- */
+
+.reservas-flow {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-bottom: 1px solid var(--line);
+}
+
+/* Botón de plegar: solo se ve en pantallas estrechas. */
+.reservas-flow-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    border: 0;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.6rem 1rem;
+}
+
+.reservas-flow-chevron {
+    transition: transform 180ms ease;
+}
+
+.reservas-flow.is-open .reservas-flow-chevron {
+    transform: rotate(180deg);
+}
+
+/* Cerrado por defecto en pantallas estrechas; en escritorio se fuerza visible (media query de abajo). */
+.reservas-flow-body {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 44vh;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+    padding: 0.75rem 1rem 1rem;
+}
+
+.reservas-flow.is-open .reservas-flow-body {
+    display: flex;
+}
+
+/* En estrecho el SVG mantiene un ancho mínimo legible y la caja hace scroll horizontal. */
+.reservas-flow-svg {
+    display: block;
+    flex: 0 0 auto; /* sin encoger: si no cabe, la caja hace scroll en vez de dibujarlo diminuto */
+    width: 100%;
+    min-width: 520px;
+    height: auto;
+}
+
+.reservas-flow-caption {
+    margin: 0;
+    color: #dbeafe;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.reservas-flow-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.reservas-flow-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.reservas-flow-swatch {
+    width: 14px;
+    height: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 3px;
+}
+
+.reservas-flow-swatch--current {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.reservas-flow-swatch--visited {
+    border-color: var(--accent);
+    background: rgba(59, 130, 246, 0.25);
+}
+
+/* Piezas del SVG. Los colores salen de las variables de estilos.css. Los estados
+   (is-current / is-visited / is-walked / is-active) los pone el JS; el CSS decide cómo se ven. */
+.reservas-flow-group rect {
+    fill: rgba(255, 255, 255, 0.025);
+    stroke: var(--line);
+    stroke-width: 1;
+    transition: fill 250ms ease, stroke 250ms ease;
+}
+
+.reservas-flow-group.is-active rect {
+    fill: rgba(20, 184, 166, 0.07);
+    stroke: rgba(20, 184, 166, 0.65);
+}
+
+.reservas-flow-group-title {
+    fill: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.reservas-flow-group.is-active .reservas-flow-group-title {
+    fill: var(--primary);
+}
+
+.reservas-flow-node rect {
+    fill: rgba(7, 17, 31, 0.85);
+    stroke: rgba(148, 163, 184, 0.38);
+    stroke-width: 1;
+    transition: fill 250ms ease, stroke 250ms ease;
+}
+
+.reservas-flow-node text {
+    fill: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    pointer-events: none;
+}
+
+.reservas-flow-node.is-visited rect {
+    fill: rgba(59, 130, 246, 0.16);
+    stroke: var(--accent);
+}
+
+.reservas-flow-node.is-visited text {
+    fill: #dbeafe;
+}
+
+.reservas-flow-node.is-current rect {
+    fill: var(--primary);
+    stroke: #5eead4;
+    stroke-width: 2;
+}
+
+.reservas-flow-node.is-current text {
+    fill: #04111f;
+}
+
+.reservas-flow-edge {
+    fill: none;
+    stroke: rgba(148, 163, 184, 0.45);
+    stroke-width: 1.3;
+    marker-end: url(#reservas-flow-arrow);
+    transition: stroke 250ms ease;
+}
+
+.reservas-flow-edge.is-walked {
+    stroke: var(--accent);
+    stroke-width: 2;
+    marker-end: url(#reservas-flow-arrow-walked);
+}
+
+.reservas-flow-arrowhead {
+    fill: rgba(148, 163, 184, 0.6);
+}
+
+.reservas-flow-arrowhead--walked {
+    fill: var(--accent);
+}
+
+/* Escritorio: diagrama a la derecha, siempre visible, y chat a la izquierda con ancho fijo.
+   row-reverse: el diagrama va primero en el HTML (le toca el botón de plegar en móvil) pero se pinta a la derecha. */
+@media (min-width: 1020px) {
+    .reservas-assistant-panel {
+        width: min(1040px, 100%);
+        height: min(720px, calc(100vh - 2rem));
+        height: min(720px, calc(100dvh - 2rem));
+    }
+
+    .reservas-assistant-body {
+        flex-direction: row-reverse;
+    }
+
+    .reservas-assistant-chat {
+        flex: 0 0 440px;
+    }
+
+    .reservas-flow {
+        flex: 1 1 auto;
+        min-width: 0;
+        border-bottom: 0;
+        border-left: 1px solid var(--line);
+    }
+
+    .reservas-flow-toggle {
+        display: none;
+    }
+
+    .reservas-flow-body {
+        display: flex;
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: none;
+        justify-content: center;
+    }
+
+    /* Aquí el SVG se adapta al hueco disponible (mantiene la proporción) en lugar de tener ancho mínimo. */
+    .reservas-flow-svg {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 0;
+    }
+}
+
+.reservas-assistant-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reservas-assistant-restart {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 36px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.35rem 0.7rem;
+}
+
+.reservas-assistant-restart:hover:not(:disabled) {
+    border-color: rgba(20, 184, 166, 0.5);
+}
+
+/* Aviso del sistema dentro del chat (fin de la conversación, límite alcanzado). */
+.reservas-assistant-note {
+    align-self: center;
+    max-width: 92%;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Burbuja «escribiendo…» / «activando servidor…»: late suavemente. */
+.reservas-assistant-message--pending {
+    animation: reservas-assistant-pulse 1.3s ease-in-out infinite;
+}
+
+@keyframes reservas-assistant-pulse {
+    50% {
+        opacity: 0.45;
+    }
+}
+
+/* Mismo aspecto que .portfolio-assistant-suggestions, pero con su propia regla [hidden]
+   (la del CV usa display:flex, que anularía el atributo hidden). */
+.reservas-assistant-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    border-top: 1px solid var(--line);
+    padding: 0.75rem 1rem;
+}
+
+.reservas-assistant-suggestions[hidden] {
+    display: none;
+}
+
+/* Estados desactivados (el CSS del CV no los define; aquí van acotados al widget de reservas). */
+.reservas-assistant button:disabled,
+.reservas-assistant input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Tarjeta de #proyectos: ocupa las dos columnas de la rejilla. */
+.project-card--reservas {
+    grid-column: span 2;
+}
+
+@media (max-width: 700px) {
+    .reservas-assistant {
+        padding: 0.75rem;
+    }
+
+    .reservas-assistant-panel {
+        height: calc(100vh - 1.5rem);
+        height: calc(100dvh - 1.5rem);
+    }
+
+    /* En móvil el botón de reiniciar queda solo con el icono para no apretar la cabecera. */
+    .reservas-assistant-restart span {
+        display: none;
+    }
+
+    .project-card--reservas {
+        grid-column: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reservas-assistant-message--pending {
+        animation: none;
+    }
+
+    .reservas-flow-chevron,
+    .reservas-flow-group rect,
+    .reservas-flow-node rect,
+    .reservas-flow-edge {
+        transition: none;
+    }
+}

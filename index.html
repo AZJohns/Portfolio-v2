@@ -22,6 +22,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="estilos.css">
     <link rel="stylesheet" href="css/portfolioAssistant.css">
+    <link rel="stylesheet" href="css/reservasAssistant.css">
 </head>
 
 <body>
@@ -54,7 +55,8 @@
 
                 <p class="hero-text">
                     He trabajado con React, Node.js, Express, PostgreSQL, CRUDs, roles, validaciones, gestión de datos y
-                    pruebas con Postman. Busco incorporarme a un equipo técnico donde aportar en frontend y backend, seguir
+                    pruebas con Postman. Busco incorporarme a un equipo técnico donde aportar en frontend y backend,
+                    seguir
                     creciendo y trabajar con código mantenible y buenas prácticas.
                 </p>
 
@@ -64,7 +66,8 @@
                         Ver proyectos
                     </a>
 
-                    <a class="btn btn-secondary" download href="CV/CV - John Sebastian Andrade Zapata - Profesional ATS.pdf">
+                    <a class="btn btn-secondary" download
+                        href="CV/CV - John Sebastian Andrade Zapata - Profesional ATS.pdf">
                         <i class="fa-solid fa-download" aria-hidden="true"></i>
                         Descargar CV
                     </a>
@@ -92,7 +95,8 @@
                     <li><strong>Ubicación:</strong> Madrid, España</li>
                     <li><strong>Email:</strong> <a
                             href="mailto:andradezapatajohn@gmail.com">andradezapatajohn@gmail.com</a></li>
-                    <li><strong>Stack:</strong> React, JavaScript, Java, Node.js, Express, PostgreSQL, MySQL, PostgreSQL, PHP, Git y
+                    <li><strong>Stack:</strong> React, JavaScript, Java, Node.js, Express, PostgreSQL, MySQL,
+                        PostgreSQL, PHP, Git y
                         Postman</li>
                     <li><strong>Intereses:</strong> Full stack, frontend, backend, APIs REST, SQL y Ciberseguridad</li>
                 </ul>
@@ -343,6 +347,39 @@
                         </div>
                     </div>
                 </article>
+                <!-- Casa John: asistente de reservas (la demo abre el widget de js/reservasAssistant.js) -->
+                <article class="project-card project-card--reservas reveal">
+                    <div class="project-content">
+                        <h3>Casa John · Asistente de reservas</h3>
+                        <p>Asistente conversacional para hacer y cancelar reservas de un restaurante ficticio.
+                            La demo muestra el chat junto a un diagrama que indica en qué paso del flujo va la
+                            conversación.</p>
+                        <dl>
+                            <div>
+                                <dt>Problema</dt>
+                                <dd>Un restaurante pierde tiempo atendiendo por teléfono reservas y cancelaciones que
+                                    siguen siempre los mismos pasos: día, hora, personas y datos de contacto.</dd>
+                            </div>
+                            <div>
+                                <dt>Trabajo técnico</dt>
+                                <dd>Agente de Dialogflow CX con flows y páginas, webhook en Node/Express desplegado en
+                                    Cloud Run con PostgreSQL en Neon, y una API intermedia con validación y límite
+                                    de mensajes. El widget es JavaScript sin framework, con el diagrama del flujo en
+                                    SVG hecho a mano.</dd>
+                            </div>
+                        </dl>
+                        <div class="chips">
+                            <span>Dialogflow CX</span><span>Node.js</span><span>Express</span><span>Cloud
+                                Run</span><span>PostgreSQL / Neon</span><span>JavaScript</span><span>SVG</span>
+                        </div>
+                        <div class="project-actions">
+                            <button type="button" class="btn btn-primary" data-reservas-open aria-haspopup="dialog">
+                                <i class="fa-solid fa-comments" aria-hidden="true"></i>
+                                Probar demo
+                            </button>
+                        </div>
+                    </div>
+                </article>
 
             </div>
         </section>
@@ -395,7 +432,8 @@
                         <i class="fa-brands fa-github" aria-hidden="true"></i>
                         GitHub
                     </a>
-                    <a class="btn btn-ghost" download href="CV/CV - John Sebastian Andrade Zapata - Profesional ATS.pdf">
+                    <a class="btn btn-ghost" download
+                        href="CV/CV - John Sebastian Andrade Zapata - Profesional ATS.pdf">
                         <i class="fa-solid fa-download" aria-hidden="true"></i>
                         CV
                     </a>
@@ -414,6 +452,8 @@
     <script src="script.js"></script>
     <script src="js/portfolioAssistantData.js"></script>
     <script src="js/portfolioAssistant.js"></script>
+    <script src="js/reservasFlowDiagram.js"></script>
+    <script src="js/reservasAssistant.js"></script>
 </body>
 
 

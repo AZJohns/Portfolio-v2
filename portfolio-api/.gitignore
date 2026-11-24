@@ -14,3 +14,10 @@ Thumbs.db
 tmp/
 temp/
 *.tmp
+
+# Claves de cuentas de servicio de Google
+claves/
+*-key.json
+*service-account*.json
+*credentials*.json
+*.pem

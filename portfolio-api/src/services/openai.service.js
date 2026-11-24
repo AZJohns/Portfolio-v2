@@ -49,7 +49,6 @@ Máximo 900 caracteres.
 `.trim();
 
 let openaiClient;
-
 const getOpenAIClient = () => {
   if (!env.openaiApiKey) {
     const error = new Error('OPENAI_API_KEY no está configurada en el servidor.');

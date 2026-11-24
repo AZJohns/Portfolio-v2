@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { env } from './config/env.js';
 import chatRoutes from './routes/chat.routes.js';
+import reservasRoutes from './routes/reservas.routes.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 
 const app = express();
@@ -19,6 +20,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/chat', chatRoutes);
+app.use('/api/reservas/chat', reservasRoutes);
 
 app.use(errorMiddleware);
 
