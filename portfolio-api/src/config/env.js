@@ -22,6 +22,9 @@ export const env = {
     agentId: process.env.CX_AGENT_ID || '',
     // El agente está en 'global'; no es secreto, por eso lleva valor por defecto.
     location: process.env.CX_LOCATION || 'global',
+    // Credencial de la cuenta de servicio como texto JSON (para Render, donde no hay archivo).
+    // Si está vacía, la librería usa GOOGLE_APPLICATION_CREDENTIALS como siempre.
+    credentialsJson: process.env.GOOGLE_CREDENTIALS_JSON || '',
     // Variable propia: no se mezcla con el límite del chat del CV.
     maxMessagesPerVisitor: toNumber(process.env.MAX_RESERVAS_MESSAGES_PER_VISITOR, 30),
   },

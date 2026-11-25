@@ -15,9 +15,23 @@ const getSessionsClient = () => {
   }
 
   if (!sessionsClient) {
-    // Agente en 'global': endpoint por defecto, sin opciones.
-    // La credencial la busca sola en GOOGLE_APPLICATION_CREDENTIALS.
-    sessionsClient = new SessionsClient();
+    // Agente en 'global': endpoint por defecto.
+    if (env.dialogflow.credentialsJson) {
+      // Credencial en una variable (Render): tiene prioridad sobre GOOGLE_APPLICATION_CREDENTIALS.
+      let credentials;
+      try {
+        credentials = JSON.parse(env.dialogflow.credentialsJson);
+      } catch {
+        // No se usa el error original: el mensaje de JSON.parse puede incluir un trozo del contenido.
+        const error = new Error('GOOGLE_CREDENTIALS_JSON no es un JSON válido.');
+        error.statusCode = 503;
+        throw error;
+      }
+      sessionsClient = new SessionsClient({ credentials, projectId: env.dialogflow.projectId });
+    } else {
+      // Sin la variable (local): la credencial la busca sola en GOOGLE_APPLICATION_CREDENTIALS.
+      sessionsClient = new SessionsClient();
+    }
   }
 
   return sessionsClient;
